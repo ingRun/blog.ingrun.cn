@@ -1,7 +1,7 @@
 # 个人博客项目
 
 ```python
-# auto: ingrun
+# author: ingrun
 # time: 2020-01-05
 # flask + vue
 ```
