@@ -11,12 +11,14 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=True)
     phone = db.Column(db.String(11))
 
+    # 构造方法
     def __init__(self, username, password, email, phone):
         self.username = username
         self.email = email
         self.password = password
         self.phone = phone
 
+    # toString
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -27,5 +29,5 @@ class User(db.Model):
     # 定义返回字典中的键
     @staticmethod
     def keys():
-        return ['id', 'username', 'password', 'email', 'phone']
+        return ['id', 'username', 'email', 'phone']
 
