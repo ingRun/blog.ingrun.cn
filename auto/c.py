@@ -16,3 +16,5 @@ for i in range(len(out)-1):
 
     cmd = f'kill -9 {ls[1]}'
     subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
+
+print()
