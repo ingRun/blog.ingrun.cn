@@ -8,10 +8,11 @@ from models.User import User
 
 
 @blog.route('/api/login', methods=['POST'])
-def get_user():
+def login() -> str:
     if request.method == 'POST':
-        data = request.get_json()
-
-        user = User.query.filter_by(email=data['email']).first()
+        data: dict = request.get_json()
+        em = data['email']
+        user = User.query.filter_by(email=em).first()
         return jsonify(user)
+
 
