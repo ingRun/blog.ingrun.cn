@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, date
 
 from flask import Flask
 from flask.json import JSONEncoder as _JSONEncoder
@@ -22,6 +23,9 @@ login_manager.init_app(blog)
 
 from app import urls
 from app.urls import user_url
+from app.urls import blog_urls
+from models.User import User
+from models.Blog import Blog
 
 
 # 自定义json 序列化器
@@ -29,6 +33,10 @@ class JSONEncoder(_JSONEncoder):
     def default(self, o):
         if hasattr(o, 'keys') and hasattr(o, '__getitem__'):
             return dict(o)
+        if isinstance(o, datetime):
+            return o.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(o, date):
+            return o.strftime('%Y-%m-%d')
         raise super(self, o)
 
 

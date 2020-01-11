@@ -20,12 +20,12 @@ def login() -> str:
 def register() -> str:
     if request.method == 'POST':
         data: dict = request.get_json()    # 获取前端传递的 JSON 字符串
-        if data['password'] is not data['re_password']:
+        if not data['password'] == data['re_password']:
             return '两次输入的密码不一致！'
 
         user = User(username=data['username'], password=data['password'], email=data['email'], phone=data['phone'])
-        db.Session.add(user)
-        db.Session.commit()
+        db.session.add(user)
+        db.session.commit()
 
         return jsonify(user)
 
