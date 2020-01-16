@@ -29,3 +29,21 @@ def get_blog() -> str:
         return jsonify(new_blog)
 
 
+@blog.route('/api/getBlogContents', methods=['GET'])
+def get_blog_contents() -> str:
+    if request.method == 'GET':
+        blog_id = request.values.get('id')
+
+        new_blog = Blog.query.filter_by(id=blog_id).first()
+
+        return jsonify(new_blog.contents)
+
+
+@blog.route('/api/getBlogList', methods=['GET'])
+def get_blog_list() -> str:
+    if request.method == 'GET':
+        new_blog = Blog.query.all()
+
+        return jsonify(new_blog)
+
+

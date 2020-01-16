@@ -1,7 +1,9 @@
 from flask_script import Manager
 from app import blog
-from flask_migrate import Migrate,MigrateCommand
+from flask_migrate import Migrate, MigrateCommand
 from app import db
+
+from models.Blog import Blog
 
 manager = Manager(blog)
 # init  migrate upgrade

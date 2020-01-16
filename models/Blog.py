@@ -13,7 +13,7 @@ class Blog(db.Model, UserMixin):
     blog_title = db.Column(db.String(100), unique=True, nullable=True, index=True)  # 标题
 
     # 顺序不能写反， 先指定类型，再是外键 'grade.g_id'必须要小写   作者
-    author = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True, unique=True)
+    author = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True, unique=False)
     create_time = db.Column(db.DateTime, default=datetime.now())  # 创建时间
     update_time = db.Column(db.DateTime, default=datetime.now())  # 最后修改时间
     contents = db.Column(db.Text, nullable=True)     # 内容
