@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 
 
@@ -27,6 +27,17 @@ class User(db.Model, UserMixin):
     # 返回对象对应属性的值
     def __getitem__(self, item):
         return getattr(self, item)
+
+    @staticmethod
+    def from_dict(data):
+        if 'username' in data and 'email' in data and 'phone' in data and 'password' in data:
+            return User(
+                username=data['username'],
+                email=data['email'],
+                phone=data['phone'],
+                password=generate_password_hash(data['password'])
+            )
+        return None
 
     # 定义返回字典中的键
     @staticmethod

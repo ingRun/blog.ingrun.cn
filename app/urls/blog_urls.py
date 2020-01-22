@@ -1,7 +1,6 @@
 import json
 
 from flask import request, jsonify
-from flask_login import login_required
 
 from app import blog, db
 from models.Blog import Blog

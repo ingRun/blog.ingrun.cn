@@ -21,9 +21,9 @@ login_manager.login_message = u"用户未登录，请先登录。"
 login_manager.init_app(blog)
 
 
-from app import urls
 from app.urls import user_url
 from app.urls import blog_urls
+from app import other_urls
 from models.User import User
 from models.Blog import Blog
 

@@ -3,7 +3,6 @@ from flask_login import login_required
 
 from app import blog, login_manager
 from models.User import User
-from app.urls import user_url
 
 
 @login_manager.user_loader
@@ -12,7 +11,6 @@ def load_user(user_id):
 
 
 @blog.route('/')
-@login_required
 def hello_world():
     return 'Hello World!'
 
@@ -24,7 +22,7 @@ def un_login():
 
 @blog.route('/api/getUser', methods=['GET', 'POST'])
 @login_required   # 权限认证必须写在 url 下面
-def get_user():
+def get_user_by_username():
     if request.method == 'GET':
         username: str = request.values.get('username')
         user = User.query.filter_by(username=username).first()
