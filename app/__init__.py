@@ -12,7 +12,6 @@ blog = Flask(__name__)
 blog.config.from_object('config')
 db = SQLAlchemy(blog)
 
-
 blog.secret_key = os.urandom(24)
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -21,12 +20,7 @@ login_manager.login_message = u"用户未登录，请先登录。"
 login_manager.init_app(blog)
 
 
-from app.urls import user_url
-from app.urls import blog_urls
-from app import other_urls
-from models.User import User
-from models.Blog import Blog
-
+from app.models.User import User
 
 # 自定义json 序列化器
 class JSONEncoder(_JSONEncoder):
@@ -42,3 +36,11 @@ class JSONEncoder(_JSONEncoder):
 
 # 使用自己定义的方法
 blog.json_encoder = JSONEncoder
+
+from app.api import bp as api_bp
+from app.urls import user_url
+
+blog.register_blueprint(api_bp, url_prefix='/api')
+
+
+
