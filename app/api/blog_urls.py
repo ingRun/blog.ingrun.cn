@@ -1,25 +1,31 @@
 from datetime import datetime
 
-from flask import request, jsonify
+from flask import request, jsonify, g
 
 from app import db
 from app.api import bp
+from app.api.auth import token_auth
 from app.api.myRedis import set_redis_data, get_redis_data
 from app.api.tools import success_response, err_response
 from app.models.Blog import Blog
 
 @bp.route('/addBlog', methods=['POST'])
+@token_auth.login_required   # 用户登陆验证
 def add_blog() -> str:
     if request.method == 'POST':
         data: dict = request.get_json()    # 获取前端传递的 JSON 字符串
-        # 作者根据登陆信息来获取！
-        author = 1
-        new_blog = Blog(blog_title=data['blog_title'], author=author,
-                        contents=data['contents'], blog_type=data['blog_type'])
 
+        # 作者根据登陆信息来获取！
+        author = g.current_user.id
+
+        check_message = Blog.check_data(data)  # 检测通过返回空字符串  否则返回提示
+        if check_message:
+            return err_response(message=check_message, status_code=400)
+
+        data['author'] = author
+        new_blog = Blog(**data)
         db.session.add(new_blog)
         db.session.commit()
-
         return success_response(message='添加博客成功！', data=new_blog)
 
 
@@ -40,15 +46,23 @@ def get_blog_list():
     return success_response(message='success', data=new_blog)
 
 @bp.route('/updBlog', methods=['POST'])
+@token_auth.login_required   # 用户登陆验证
 def upd_blog():
     data: dict = request.get_json()
+
+    if not ('id' in data):
+        return err_response(message='非法请求！', status_code=400)
+    check_message = Blog.check_data(data)
+    if check_message:
+        return err_response(message=check_message, status_code=400)
+
     blog = Blog.query.get_or_404(data['id'])
-    if 'contents' in data:
-        blog.contents = data['contents']
-    if 'blog_title' in data:
-        blog.blog_title = data['blog_title']
-    if 'blog_type' in data:
-        blog.blog_type = data['blog_type']
+    if not g.current_user.id == blog.author:
+        return err_response(message='你没有权限修改该博客', status_code=401)
+
+    blog.contents = data['contents']
+    blog.blog_title = data['blog_title']
+    blog.blog_type = data['blog_type']
     blog.update_time = datetime.now()
     db.session.commit()
     return success_response(message='success', data=blog)
@@ -57,18 +71,16 @@ def upd_blog():
 def del_blog(id):
     blog = Blog.query.get_or_404(id)
 
-    db.session.delete(blog)
-    db.session.commit()
-    return success_response(message='success')
-
-    # if blog.id == g.current_user.id:
-    #     db.session.delete(blog)
-    #     db.session.commit()
-    #     return success_response(message='success')
-    # return err_response(message='权限不足', status_code=401)
+    if blog.author == g.current_user.id:
+        db.session.delete(blog)
+        db.session.commit()
+        return success_response(message='success')
+    return err_response(message='权限不足', status_code=401)
 
 @bp.route('/redisTest', methods=['GET'])
 def redis_test():
-    set_redis_data('admin', '123456')
-    k = str(get_redis_data('admin'), 'utf-8')
-    return success_response(message=k)
+    set_redis_data('message', 'redis 已成功启动！')
+    k = get_redis_data('message')
+    if k:
+        return success_response(message=k)
+    return err_response(message='redis 未运行！', status_code=500)

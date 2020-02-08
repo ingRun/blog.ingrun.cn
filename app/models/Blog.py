@@ -43,3 +43,10 @@ class Blog(db.Model, UserMixin):
         return ['id', 'blog_title', 'author', 'create_time', 'update_time',
                 'read_count', 'like_count', 'blog_type']
 
+    @staticmethod
+    def check_data(data) -> str:
+        if not ('contents' in data and 'blog_title' in data and 'blog_type' in data):
+            return '数据不完整或不合法！'
+        if not (len(data['blog_title']) > 2 and len(data['contents']) > 20):
+            return '标题或正文内容过少！'
+        return ''

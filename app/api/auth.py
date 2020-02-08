@@ -29,4 +29,4 @@ def verify_token(token):
 
 @token_auth.error_handler
 def token_auth_error():
-    return json_response(message='当前用户登陆已失效', status_code=401, code=0)
+    return json_response(message='当前用户未登陆或登陆已失效，请登录后重试', status_code=401, code=0)
