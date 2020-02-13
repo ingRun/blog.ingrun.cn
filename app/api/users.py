@@ -48,3 +48,10 @@ def register() -> str:
 @token_auth.login_required
 def get_user_info():
     return success_response(data=g.current_user)
+
+# 获取用户名
+@bp.route('/getUserName/<int:id>', methods=['GET'])
+def get_username(id):
+    user = User.query.get_or_404(id)
+    return success_response(data=user.username)
+

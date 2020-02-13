@@ -3,9 +3,7 @@ from datetime import datetime, date
 
 from flask import Flask
 from flask.json import JSONEncoder as _JSONEncoder
-
 from flask_login import LoginManager
-
 from flask_sqlalchemy import SQLAlchemy
 
 blog = Flask(__name__)
@@ -41,6 +39,3 @@ from app.api import bp as api_bp
 from app.urls import user_url
 
 blog.register_blueprint(api_bp, url_prefix='/api')
-
-
-

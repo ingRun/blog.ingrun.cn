@@ -7,6 +7,7 @@ from app.api import bp
 from app.api.auth import token_auth
 from app.api.myRedis import set_redis_data, get_redis_data
 from app.api.tools import success_response, err_response
+from app.models.User import User
 from app.models.Blog import Blog
 
 @bp.route('/addBlog', methods=['POST'])

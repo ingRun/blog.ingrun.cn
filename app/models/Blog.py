@@ -20,14 +20,16 @@ class Blog(db.Model, UserMixin):
     read_count = db.Column(db.Integer, nullable=True, default=1)   # 阅读数
     like_count = db.Column(db.Integer, nullable=True, default=0)   # 点赞数
     blog_type = db.Column(db.String(50), nullable=True, default='other')   # 所属分类
+    preview = db.Column(db.Text, default='')     # 预览内容
 
     # 构造方法
-    def __init__(self, blog_title, author, contents, blog_type):
+    def __init__(self, blog_title, author, contents, blog_type, preview: str = ''):
         self.blog_title = blog_title
         self.author = author
         self.author = author
         self.contents = contents
         self.blog_type = blog_type
+        self.preview = preview
 
     # toString
     def __repr__(self):
@@ -41,11 +43,11 @@ class Blog(db.Model, UserMixin):
     @staticmethod
     def keys():
         return ['id', 'blog_title', 'author', 'create_time', 'update_time',
-                'read_count', 'like_count', 'blog_type']
+                'read_count', 'like_count', 'blog_type', 'preview']
 
     @staticmethod
     def check_data(data) -> str:
-        if not ('contents' in data and 'blog_title' in data and 'blog_type' in data):
+        if not ('contents' in data and 'blog_title' in data and 'blog_type' in data and 'preview' in data):
             return '数据不完整或不合法！'
         if not (len(data['blog_title']) > 2 and len(data['contents']) > 20):
             return '标题或正文内容过少！'
