@@ -18,6 +18,7 @@ login_manager.login_message = u"用户未登录，请先登录。"
 login_manager.init_app(blog)
 
 
+
 from app.models.User import User
 
 # 自定义json 序列化器
