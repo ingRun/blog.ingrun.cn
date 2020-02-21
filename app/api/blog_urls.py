@@ -5,7 +5,8 @@ from flask import request, g
 from app import db
 from app.api import bp
 from app.api.auth import token_auth
-from app.api.myRedis import set_redis_data, get_redis_data
+from app.utils.ip_count import AccessToday
+from app.utils.myRedis import set_redis_data, get_redis_data, incr_redis
 from app.api.tools import success_response, err_response
 from app.models.Blog import Blog
 
@@ -43,6 +44,7 @@ def get_blog_contents(id):
 @bp.route('/getBlogList', methods=['GET'])
 def get_blog_list():
     new_blog = Blog.query.all()
+    AccessToday.access_toady_add()
     return success_response(message='success', data=new_blog)
 
 @bp.route('/updBlog', methods=['POST'])
@@ -84,3 +86,4 @@ def redis_test():
     if k:
         return success_response(message=k)
     return err_response(message='redis 未运行！', status_code=500)
+

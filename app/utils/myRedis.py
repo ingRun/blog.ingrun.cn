@@ -2,9 +2,7 @@ import config
 from redis import Redis
 from redis import ConnectionPool, exceptions
 
-
-EXPIRES_TIME = 2000    # Redis过期时间,不设置则默认不过期
-is_run_redis = False   # 判断 redis 是否运行
+EXPIRES_TIME = None    # Redis过期时间,不设置则默认不过期
 
 def redis_connection_pool():
     return ConnectionPool(**config.REDIS_DB_URL)
@@ -37,3 +35,7 @@ def set_redis_data(key, value):
             ex=EXPIRES_TIME  # 第三个参数表示Redis过期时间,不设置则默认不过期
         )
 
+def incr_redis(key='access_sum'):
+    conn = redis_connect()
+    if conn:
+        conn.incr(key)

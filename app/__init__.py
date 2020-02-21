@@ -17,9 +17,9 @@ login_manager.login_view = 'un_login'
 login_manager.login_message = u"用户未登录，请先登录。"
 login_manager.init_app(blog)
 
-
-
 from app.models.User import User
+from app.models.Blog import Blog
+from app.models.Ip import Ip
 
 # 自定义json 序列化器
 class JSONEncoder(_JSONEncoder):

@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from flask_login import UserMixin
+# from flask_login import UserMixin
 
 from app import db
 
 
-class Blog(db.Model, UserMixin):
+class Blog(db.Model):
 
     __tablename__ = 'blog'
 
