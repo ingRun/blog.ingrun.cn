@@ -91,3 +91,7 @@ class User(db.Model, UserMixin):
             user.token_expiration = datetime.utcnow() + timedelta(minutes=LOGIN_TOKEN_EXTENSION_TIME)
             db.session.commit()
         return user
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+        self.revoke_token()

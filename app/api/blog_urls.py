@@ -6,7 +6,7 @@ from app import db
 from app.api import bp
 from app.api.auth import token_auth
 from app.utils.ip_count import AccessToday
-from app.utils.myRedis import set_redis_data, get_redis_data, incr_redis
+from app.utils.myRedis import set_redis_data, get_redis_data
 from app.api.tools import success_response, err_response
 from app.models.Blog import Blog
 
@@ -33,6 +33,8 @@ def add_blog() -> str:
 @bp.route('/getBlog/<int:id>', methods=['GET'])
 def get_blog(id) -> str:
     blog1 = Blog.query.get_or_404(id)
+    blog1.read_count += 1
+    db.session.commit()
     return success_response(data=blog1)
 
 @bp.route('/getBlogContents/<int:id>', methods=['GET'])
@@ -70,6 +72,7 @@ def upd_blog():
     return success_response(message='success', data=blog)
 
 @bp.route('/delBlog/<int:id>', methods=['POST'])
+@token_auth.login_required   # 用户登陆验证
 def del_blog(id):
     blog = Blog.query.get_or_404(id)
 

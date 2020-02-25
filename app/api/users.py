@@ -55,3 +55,25 @@ def get_username(id):
     user = User.query.get_or_404(id)
     return success_response(data=user.username)
 
+# 修改用户密码
+@bp.route('/updPassword', methods=['POST'])
+@token_auth.login_required
+def upd_password():
+    data: dict = request.get_json() or {}
+    if 'old_password' not in data and 'new_password' not in data and 're_password' not in data:
+        return err_response(message='数据提交不正确！', status_code=401)
+    old_password = data['old_password']
+    new_password = data['new_password']
+    re_password = data['re_password']
+    if not new_password == re_password:
+        return err_response(message='两次输入的密码不一致', status_code=401)
+    user = g.current_user
+    if not user.check_password(password=old_password):
+        return err_response(message='原密码错误！', status_code=403)
+    if old_password == new_password:
+        return err_response(message='修改后的密码不能与原密码相同！', status_code=401)
+    if len(data['new_password']) < 6:
+        return err_response(message='密码太短！', status_code=401)
+    user.set_password(password=new_password)
+    db.session.commit()
+    return success_response(message='修改密码成功,请重新登陆')
