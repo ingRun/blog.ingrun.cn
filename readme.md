@@ -6,10 +6,16 @@
 # flask + vue
 ```
 
+## windows 运行项目
+```
+# 1. git clone git@github.com:ingRun/blog.ingrun.cn.git
+# 2. pip install -r requirements.txt
+# 3. python3 blog.py
+```
 
 ### 主要是记录一些开发技术之类的吧
 
- ## Install
+## Install
 
 ```python
 # 1. python3 -m venv my_venv
@@ -17,7 +23,6 @@
 # 3. git clone git@github.com:ingRun/blog.ingrun.cn.git
 # 4. pip3 install -r requirements.txt
 # 5. python3 blog.py --host=0.0.0.0 --port=80
-
 
 ## 启动 redis 
 # 6. yum install redis
