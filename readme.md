@@ -5,6 +5,7 @@
 # time: 2020-01-05
 # flask + vue
 ```
+### 主要是记录一些开发技术之类的吧
 
 ## windows 运行项目
 ```
@@ -13,9 +14,8 @@
 # 3. python3 blog.py
 ```
 
-### 主要是记录一些开发技术之类的吧
 
-## Install
+## linux Install
 
 ```python
 # 1. python3 -m venv my_venv
