@@ -6,7 +6,7 @@ from app import db
 from app.api import bp
 from app.api.auth import token_auth
 from app.utils.ip_count import AccessToday
-from app.utils.myRedis import set_redis_data, get_redis_data
+from app.utils.myRedis import my_redis
 from app.api.tools import success_response, err_response
 from app.models.Blog import Blog
 
@@ -35,6 +35,7 @@ def get_blog(id) -> str:
     blog1 = Blog.query.get_or_404(id)
     blog1.read_count += 1
     db.session.commit()
+    blog1.blog_type = eval(blog1.blog_type)
     return success_response(data=blog1)
 
 @bp.route('/getBlogContents/<int:id>', methods=['GET'])
@@ -66,7 +67,8 @@ def upd_blog():
 
     blog.contents = data['contents']
     blog.blog_title = data['blog_title']
-    blog.blog_type = data['blog_type']
+    blog.blog_type = str(data['blog_type'])
+    blog.preview = data['preview']
     blog.update_time = datetime.now()
     db.session.commit()
     return success_response(message='success', data=blog)
@@ -84,9 +86,15 @@ def del_blog(id):
 
 @bp.route('/redisTest', methods=['GET'])
 def redis_test():
-    set_redis_data('message', 'redis 已成功启动！')
-    k = get_redis_data('message')
+    my_redis.set_redis_data('message', 'redis 已成功启动！')
+    k = my_redis.get_redis_data('message')
     if k:
         return success_response(message=k)
     return err_response(message='redis 未运行！', status_code=500)
+
+@bp.route('/blogSearch/<string:search_value>', methods=['GET'])
+def blog_search(search_value):
+    blog_li = Blog.query.filter(Blog.blog_title.ilike('%' + search_value + '%'))
+    return success_response(data=list(blog_li))
+
 

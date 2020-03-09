@@ -1,4 +1,4 @@
-from app.utils.myRedis import get_redis_data, incr_redis
+from app.utils.myRedis import my_redis
 from datetime import datetime, timedelta
 import threading
 
@@ -9,21 +9,21 @@ class AccessSum:
 
     @staticmethod
     def access_sum_add():
-        incr_redis(access_sum)
+        my_redis.incr_redis(access_sum)
 
     @staticmethod
     def access_sum_get():
-        return get_redis_data(access_sum)
+        return my_redis.get_redis_data(access_sum)
 
 class AccessToday:
     @staticmethod
     def access_toady_add():
-        incr_redis(access_today)
+        my_redis.incr_redis(access_today)
         AccessSum.access_sum_add()
 
     @staticmethod
     def access_today_get():
-        return get_redis_data(access_today)
+        return my_redis.get_redis_data(access_today)
 
     @staticmethod
     def access_today_time():

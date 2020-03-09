@@ -19,7 +19,7 @@ class Blog(db.Model):
     contents = db.Column(db.Text, nullable=True)     # 内容
     read_count = db.Column(db.Integer, nullable=True, default=1)   # 阅读数
     like_count = db.Column(db.Integer, nullable=True, default=0)   # 点赞数
-    blog_type = db.Column(db.String(50), nullable=True, default='other')   # 所属分类
+    blog_type = db.Column(db.String(200), nullable=True, default='[]')   # 所属分类
     preview = db.Column(db.Text, default='')     # 预览内容
 
     # 构造方法
@@ -28,7 +28,7 @@ class Blog(db.Model):
         self.author = author
         self.author = author
         self.contents = contents
-        self.blog_type = blog_type
+        self.blog_type = str(blog_type)
         self.preview = preview
 
     # toString

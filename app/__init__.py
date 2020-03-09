@@ -33,7 +33,7 @@ class JSONEncoder(_JSONEncoder):
         raise super(self, o)
 
 
-# 使用自己定义的方法
+# 使用自己定义的 json 序列化器
 blog.json_encoder = JSONEncoder
 
 from app.api import bp as api_bp
