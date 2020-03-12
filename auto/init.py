@@ -3,7 +3,8 @@ k = "999"
 
 while k is not '0':
     if k == '1':
-        os.system('python3 a.py && python3 c.py && python3 b.py')
+        # os.system('python3 a.py && python3 c.py && python3 b.py')
+        print('维护中，现仅支持远程同步')
     elif k == '2':
         os.system('python3 a.py')
     elif k == '3':

@@ -46,6 +46,15 @@ def get_blog_contents(id):
 
 @bp.route('/getBlogList', methods=['GET'])
 def get_blog_list():
+    new_blog = list(Blog.query.filter_by(is_show=True))
+    # new_blog = Blog.query.all()
+    AccessToday.access_toady_add()
+    return success_response(message='success', data=new_blog)
+
+@bp.route('/getAllBlogList', methods=['GET'])
+@token_auth.login_required   # 用户登陆验证
+def get_all_blog_list():
+    # new_blog = list(Blog.query.filter_by(is_show=True))
     new_blog = Blog.query.all()
     AccessToday.access_toady_add()
     return success_response(message='success', data=new_blog)
@@ -96,5 +105,3 @@ def redis_test():
 def blog_search(search_value):
     blog_li = Blog.query.filter(Blog.blog_title.ilike('%' + search_value + '%'))
     return success_response(data=list(blog_li))
-
-

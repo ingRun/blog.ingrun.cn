@@ -21,6 +21,7 @@ class Blog(db.Model):
     like_count = db.Column(db.Integer, nullable=True, default=0)   # 点赞数
     blog_type = db.Column(db.String(200), nullable=True, default='[]')   # 所属分类
     preview = db.Column(db.Text, default='')     # 预览内容
+    is_show = db.Column(db.Boolean, default=True)   # 是否展示该博客
 
     # 构造方法
     def __init__(self, blog_title, author, contents, blog_type, preview: str = ''):
@@ -43,7 +44,7 @@ class Blog(db.Model):
     @staticmethod
     def keys():
         return ['id', 'blog_title', 'author', 'create_time', 'update_time',
-                'read_count', 'like_count', 'blog_type', 'preview']
+                'read_count', 'like_count', 'blog_type', 'preview', 'is_show']
 
     @staticmethod
     def check_data(data) -> str:

@@ -15,7 +15,7 @@ def login() -> str:
             token = user.get_token()
             db.session.commit()
             return success_response(message='登陆成功！', data={'token': token})
-        return err_response(message='用户名或密码错误！', status_code=500)
+        return err_response(message='用户名或密码错误！', status_code=401)
     return err_response(message='数据提交失败！', status_code=400)
 
 # 注销
