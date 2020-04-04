@@ -9,3 +9,5 @@ out
 gen
 venv
 out.log
+config.py
+db\blog.db

@@ -33,6 +33,8 @@ class MyRedis:
         conn = self.redis_connect()
         if conn:
             data = conn.get(key)
+            if not data:
+                return None
             return str(data, 'utf-8')
         return None
 
@@ -50,6 +52,19 @@ class MyRedis:
         conn = self.redis_connect()
         if conn:
             conn.incr(key)
+
+    def get_hash_data(self, name, key=None):
+        conn = self.redis_connect()
+        if conn:
+            d = conn.hget(name, key)
+            if not d:
+                return None
+            return str(d, 'utf-8')
+
+    def set_hash_data(self, obj):
+        conn = self.redis_connect()
+        if conn:
+            conn.hset()
 
 
 my_redis = MyRedis()

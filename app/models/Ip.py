@@ -4,7 +4,7 @@ from app import db
 
 
 class Ip(db.Model):
-
+ 
     __tablename__ = 'ip'
 
     id = db.Column(db.Integer, primary_key=True)
